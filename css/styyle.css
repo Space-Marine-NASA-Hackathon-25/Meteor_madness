@@ -1,0 +1,213 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Exo 2', sans-serif;
+    background: url('../ing/earth-photo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #e0f7ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+}
+
+.main-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #00e5ff;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #a0e7ff;
+    letter-spacing: 2px;
+    margin-bottom: 3rem;
+}
+
+    .content {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+    .buttons-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+    .nav-button {
+    background: rgba(0, 40, 80, 0.7);
+    border: 2px solid #00a8ff;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    color: #e0f7ff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0, 168, 255, 0.3);
+    text-decoration: none;
+    display: block;
+}
+
+.nav-button:hover {
+    background: rgba(0, 80, 160, 0.8);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.5);
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.nav-button:hover::before {
+    left: 100%;
+}
+
+.selection-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.material-selector {
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid #0077b6;
+    border-radius: 10px;
+    padding: 1.5rem;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0, 119, 182, 0.4);
+}
+
+.selector-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.3rem;
+    color: #00e5ff;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.material-options {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
+.material-option {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.material-option:hover {
+    background: rgba(30, 70, 120, 0.9);
+    transform: scale(1.05);
+}
+
+.material-option.active {
+    background: rgba(0, 150, 199, 0.8);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 150, 199, 0.7);
+}
+
+.meteor-gif {
+    width: 100%;
+    height: 300px;
+    background: rgba(10, 25, 47, 0.6);
+    border: 2px solid #0077b6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #90e0ef;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(0, 119, 182, 0.3);
+    overflow: hidden;
+}
+
+.placeholder {
+    text-align: center;
+    padding: 2rem;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+    }
+    to {
+        text-shadow: 0 0 25px rgba(0, 229, 255, 0.9), 0 0 35px rgba(0, 229, 255, 0.5);
+    }
+}
+
+@keyframes buttonGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 168, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 168, 255, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(0, 168, 255, 0.3);
+    }
+}
+
+.nav-button:hover {
+    animation: buttonGlow 1.5s infinite;
+}
+
+@media (max-width: 900px) {
+    .content {
+        flex-direction: column;
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+}

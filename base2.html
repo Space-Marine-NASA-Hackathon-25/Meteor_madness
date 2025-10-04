@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madness - Simulate, Defeat, Survive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styyle.css">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="main-title">MADNESS</h1>
+            <p class="subtitle">SIMULATE • DEFEAT • SURVIVE</p>
+        </header>
+        
+        <div class="content">
+            <div class="buttons-section">
+                <button class="nav-button">Пошук метеорита</button>
+                <button class="nav-button">Задати метеорит</button>
+                <button class="nav-button">Симулювати</button>
+                <button class="nav-button">Відхилити</button>
+            </div>
+            
+            <div class="selection-section">
+                <div class="material-selector">
+                    <h3 class="selector-title">Оберіть матеріал метеорита</h3>
+                    <div class="material-options">
+                        <div class="material-option active" data-material="iron">Залізний</div>
+                        <div class="material-option" data-material="stone">Кам'яний</div>
+                        <div class="material-option" data-material="ice">Льодяний</div>
+                        <div class="material-option" data-material="earth">Земний</div>
+                        <div class="material-option" data-material="crystal">Кристалічний</div>
+                    </div>
+                </div>
+
+                <div class="meteor-gif" id="meteorDisplay">
+                    <div class="placeholder">Гіфка метеорита</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
