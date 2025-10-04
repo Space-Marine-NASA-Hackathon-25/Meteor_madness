@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from services import *
+from services.services import *
 
 bp = Blueprint("routes", __name__, url_prefix="")
 
