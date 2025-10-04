@@ -6,18 +6,10 @@ from poliastro.bodies import Sun
 from poliastro.twobody import Orbit
 import numpy as np
 from numpy import linalg, arccos, degrees
-
-
-DIR_KERNELS = "kernels"
-KERNELS_PATHS = ["spk/de432s.bsp", "lsk/naif0012.tls", "pck/gm_de440.tpc"]
-
-def get_paths_to_kernels(dir_kernels=DIR_KERNELS, paths=KERNELS_PATHS):
-    BASE = Path(__file__).resolve().parent.parent
-    KERNELS = BASE / dir_kernels
-    return [str(KERNELS / p) for p in paths]
-
-
-
+from services.helpers import get_paths_to_kernels, au_in_km
+    
+AU_in_km = au_in_km()
+DAY_in_s = 86400
 
 sbdb_data = {
     "data": [
@@ -48,9 +40,6 @@ horizons_data = {
 phys = sbdb_data.get("data", [{}])[0]
 vec = horizons_data.get("vectors", [{}])[0]
 
-AU_in_km = 149597870.7
-DAY_in_s = 86400
-
 x = vec.get('x', 0) * AU_in_km
 y = vec.get('y', 0) * AU_in_km
 z = vec.get('z', 0) * AU_in_km
@@ -61,7 +50,7 @@ datetime_str = vec.get('datetime', '2000-01-01 00:00')
 
 for k in get_paths_to_kernels():
     spice.furnsh(k)
-
+    
 et = spice.utc2et(datetime_str)
 
 
@@ -84,6 +73,8 @@ mass = phys.get("mass", 1e10)
 v_mag = linalg.norm(v_vec.value)
 kinetic_energy = 0.5 * mass * (v_mag * 1000)**2
 
+spice.kclear()
+
 print(f"Entry coordinates (km): {r_vec}")
 print(f"Entry speed (km/s): {v_mag:.3f}")
 print(f"Entry angle (°): {entry_angle:.2f}")
@@ -91,3 +82,4 @@ print(f"Meteor mass (kg): {mass}")
 print(f"Entry kinetic energy (J): {kinetic_energy:.3e}")
 print("\n=== Poliastro Orbit Object ===")
 print(orbit)
+

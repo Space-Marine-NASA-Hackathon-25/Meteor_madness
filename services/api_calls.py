@@ -1,19 +1,17 @@
 import requests
 import json
 from astroquery.jplhorizons import Horizons
+from ervices.helpers import get_datetimes, get_paths_to_kernels, au_in_km
+import spiceypy as spice
+import numpy as np
 
+SUN_ID   = 10
+EARTH_ID = 399
+AU_in_km = au_in_km()
 
 FIELDS = [
     "full_name", "H", "G", "density", "albedo",
     "e", "a", "q", "i", "om", "w", "ma", "tp", "per", "n", "ad", "moid_ld"]
-
-def sanitize_input(query):
-    pass
-
-
-def json2dict(js_obj):
-    dict_obj = ...
-    return dict_obj
 
 
 def call_sentry(designation):
@@ -22,10 +20,55 @@ def call_sentry(designation):
 
 def call_horizons(designation):
     """ Get data from JPL Horizons for the asteroid """
-    response = requests.get(
-        "https://ssd-api.jpl.nasa.gov/sbdb.api", 
-        params={"des": designation})
-    return json.dumps(response.json(), indent = 4)
+    spice.furnsh(get_paths_to_kernels())
+    _, _, jd = get_datetimes()
+    obj = Horizons(
+        id=f"{designation}",
+        id_type="smallbody",
+        location="@sun",
+        epochs=jd
+    )
+    orbital_el = get_orbital_elements(obj)
+    vector_el = get_vector_elements(obj)
+    spice.kclear()
+    return orbital_el, vector_el
+
+
+def get_orbital_elements(obj):
+    els_dict = dict(obj.elements()[0]) # obj.elements() return astropy.table by default
+    # print(els_dict)
+    _, gm_sun_pre = spice.bodvcd(bodyid=SUN_ID, item="GM", maxn=1)
+    gm_sun = gm_sun_pre[0]
+    orbital_elements = [
+         spice.convrt(els_dict["q"],"AU", "km"),
+         els_dict["e"],
+         np.radians(els_dict["incl"]),
+         np.radians(els_dict["Omega"]), 
+         np.radians(els_dict["w"]),
+         np.radians(els_dict["M"]),
+         spice.utc2et(els_dict["datetime_str"]),
+         gm_sun # for calculations in SPICE
+     ]
+    return orbital_elements
+
+
+def get_vector_elements(obj):
+    els = dict(obj.vectors()[0])
+    physical_elements = [
+        els["H"],
+        els["G"],
+        els["x"],
+        els["y"],
+        els["z"],
+        els["vx"],
+        els["vy"],
+        els["vz"],
+        spice.convrt(els["range"], "AU", "km"),
+        (els["range_rate"] * AU_in_km), # AU/day -> km/day
+    ]
+    return physical_elements
+
+print(call_horizons("2008 JL3"))
 
 
 def call_smdb(designation):
@@ -173,9 +216,6 @@ def call_smdb(designation):
 #         "comment": null
 #     }
 # }
-
-def convert_horizons2spice():
-    pass
 
 
 def convert_smdb2spice():
