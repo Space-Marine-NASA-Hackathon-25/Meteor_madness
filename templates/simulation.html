@@ -3,5 +3,49 @@
 {% block title %}Simulation{% endblock %}
 
 {% block main %}
+        <div class="container2">
+            <header class="header3">
+                <h1 class="main-title2">Madness</h1>
+                <p class="subtitle2">simulate, deflect, survive</p>
+            </header>
 
+            <div class="content2">
+                <section class="input-section2">
+                    <h2 class="section-title3">Задати параметри метеориту</h2>
+
+                    <div class="input-group2">
+                        <label for="mass" class="text2">Маса (кг)</label>
+                        <input type="number" id="mass" class="custom-input2" placeholder="Введіть масу...">
+                    </div>
+
+                    <div class="input-group2">
+                        <label for="density" class="text2">Густина (кг/м³)</label>
+                        <input type="number" id="diameter" class="custom-input2" placeholder="Введіть діаметр...">
+                    </div>
+
+                    <div class="input-group2">
+                        <label for="entry-speed" class="text2">Швидкість входу (км/с)</label>
+                        <input type="number" id="entry-speed" class="custom-input2" placeholder="Введіть швидкість...">
+                    </div>
+
+                    <button class="simulate-btn2">
+                        <span class="btn-text2">Симулювати</span>
+                        <div class="btn-shine2"></div>
+                    </button>
+                </section>
+                <section class="visualization-section2">
+                    <div class="gif-container2">
+                        <div class="gif-placeholder2">
+                            <span class="gif-text2">Гіфка метеорита</span>
+                        </div>
+                    </div>
+                    <button class="custom-meteorite-btn2">
+                        Custom Meteorite
+                        <div class="btn-glow2"></div>
+                    </button>
+                </section>
+            </div>
+        </div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
