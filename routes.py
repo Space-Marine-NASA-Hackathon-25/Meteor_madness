@@ -19,9 +19,12 @@ def search_asteroid_daesignation():
     
     
 @bp.route("/result")
-def result_page():
+def result_page(threat=False):
     """ Provide current most-like trajectory for PHA """
-    return render_template("result.html")
+    if threat:
+        return render_template("result.html")
+    else:
+        render_template("no_threat.html")
 
 
 @bp.route("/simulation")
