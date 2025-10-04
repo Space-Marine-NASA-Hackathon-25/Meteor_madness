@@ -14,36 +14,13 @@
             <h1 class="main-title">MADNESS</h1>
             <p class="subtitle">SIMULATE • DEFEAT • SURVIVE</p>
         </header>
-        
-        <div class="content">
-            <div class="buttons-section">
-                <button class="nav-button">Пошук метеорита</button>
-                <button class="nav-button">Задати метеорит</button>
-                <button class="nav-button">Симулювати</button>
-                <button class="nav-button">Відхилити</button>
-            </div>
-            
-            <div class="selection-section">
-                <div class="material-selector">
-                    <h3 class="selector-title">Оберіть матеріал метеорита</h3>
-                    <div class="material-options">
-                        <div class="material-option active" data-material="iron">Залізний</div>
-                        <div class="material-option" data-material="stone">Кам'яний</div>
-                        <div class="material-option" data-material="ice">Льодяний</div>
-                        <div class="material-option" data-material="earth">Земний</div>
-                        <div class="material-option" data-material="crystal">Кристалічний</div>
-                    </div>
-                </div>
-
-                <div class="meteor-gif" id="meteorDisplay">
-                    <div class="placeholder">Гіфка метеорита</div>
-                </div>
-            </div>
-        </div>
-        <div>
-          {% block main %}{% endblock %}
-        </div>
     </div>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
 </body>
 </html>
