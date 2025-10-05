@@ -15,12 +15,11 @@
             <p class="subtitle">SIMULATE • DEFEAT • SURVIVE</p>
         </header>
     </div>
-    <main>
-        {% block content %}
+    <div>
+        {% block main %}
+        <main></main>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         {% endblock %}
-    </main>
-
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
+    </div>
 </body>
 </html>
