@@ -2,10 +2,6 @@
 
 {% block title %}Madness{% endblock %}
 
-{% block main %}
-{% extends "base.html" %}
-
-{% block title %}Madness{% endblock %}
 
 {% block main %}
 <div class="content">
@@ -20,24 +16,6 @@ Simulate</button>
     </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="selection-section">
         <div class="material-selector">
             <h3 class="selector-title">Available asteroids
@@ -110,6 +88,4 @@ function selectAsteroid(meteorId) {
 window.location.href = '/result?meteor=' + meteorId;
 }
 </script>
-{% endblock %}
-
 {% endblock %}
