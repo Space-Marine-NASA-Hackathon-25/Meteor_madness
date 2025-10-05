@@ -1,3 +1,36 @@
+/* фони */
+body.default-page {
+    background: url("../images/earth.jpg");
+}
+
+body.search-page {
+    background: url("../images/earth2.png");
+}
+
+body.about-page {
+    background: url("../images/about-bg.jpg");
+}
+
+body.how-it-works-page {
+    background: url("../images/how-it-works-bg.jpg");
+}
+
+/* Загальні стилі для всіх фонів */
+body {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: "Exo 2", sans-serif;
+    color: #e0f7ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+
+
+
 /* посилання */
 header a {
     text-decoration: none;
