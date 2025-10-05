@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request
-from services import *
+from flask import Blueprint, render_template, request, redirect, url_for
+from services import get_phys_meteor, sim_orbit_n_conseq
+# from service_helpers.api_calls import call_sentry
+
 
 bp = Blueprint("routes", __name__, url_prefix="")
 
@@ -13,9 +15,13 @@ def main_page():
 def search_asteroid_daesignation():
     """ Search APIs for info + parameters? POST return text data """
     if request.method == "POST":
-        pass
-    else:
-        des = request.method.get("des")
+        des = request.form.get("des")
+        threat, _, _, _ = get_phys_meteor(des)
+        if threat:
+            orbit, r_vec, mass, entry_angle, v_mag, kinetic_energy, lat, lon = sim_orbit_n_conseq(des)
+            return render_template("result.html", des=des, orbit=orbit, r_vec=r_vec, mass=mass, entry_angle=entry_angle, v_mag=v_mag, kinetic_energy=kinetic_energy, lat=lat, lon=lon)
+        else:
+            return render_template("no_threat.html") 
     return render_template("search.html")
     
     
