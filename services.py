@@ -74,7 +74,9 @@ def sim_orbit_n_conseq(des=DES):
     
     # map
     m = get_map_obj(lat, lon)
+    draw_tsunami(m, lat, lon, kinetic_energy)
     draw_crater(m, lat, lon, kinetic_energy)
+    draw_airburst(m, lat, lon, kinetic_energy)
     m.save("templates/meteor_entry_map.html")
     
     print(f"Entry coordinates (km): {r_vec}")
@@ -100,7 +102,7 @@ def get_map_obj(lat, lon):
    
 
 def draw_crater(map_obj, lat, lon, kinetic_energy):
-    crater_radius = (kinetic_energy / (4.3e14)) ** (1/4)  # ← замінив пробіли на **
+    crater_radius = (kinetic_energy / (4.3e14)) ** 0.25 # ← замінив пробіли на **
     crater_radius_km = crater_radius / 1000
     folium.Circle(
         location=[lat, lon],
@@ -111,5 +113,49 @@ def draw_crater(map_obj, lat, lon, kinetic_energy):
         popup=f"Crater radius: {crater_radius_km:.2f} km"
     ).add_to(map_obj)
     return map_obj
+
+def draw_tsunami(map_obj, lat, lon, kinetic_energy):
+    wave_radius1 = (kinetic_energy / 1e15) ** (1/3) * 30000
+    wave_radius2 = wave_radius1 * 1.5
+    wave_radius3 = wave_radius1 * 2
+    folium.Circle(
+        location=[lat, lon],
+        radius=wave_radius1,
+        color="blue",
+        fill=True,
+        fill_opacity=0.2,
+        popup="Tsunami wave 1"
+    ).add_to(map_obj)
+    folium.Circle(
+        location=[lat, lon],
+        radius=wave_radius2,
+        color="darkblue",
+        fill=True,
+        fill_opacity=0.15,
+        popup="Tsunami wave 2"
+    ).add_to(map_obj)
+    folium.Circle(
+        location=[lat, lon],
+        radius=wave_radius3,
+        color="lightblue",
+        fill=True,
+        fill_opacity=0.1,
+        popup="Tsunami wave 3"
+    ).add_to(map_obj)
+    return map_obj
+
+
+def draw_airburst(map_obj, lat, lon, kinetic_energy):
+    blast_radius = (kinetic_energy / 1e14) ** 0.3 * 20000
+    folium.Circle(
+        location=[lat, lon],
+        radius=blast_radius,
+        color="orange",
+        fill=True,
+        fill_opacity=0.3,
+        popup="Airburst"
+    ).add_to(map_obj)
+    return map_obj
+
 
 # sim_orbit_n_conseq()
