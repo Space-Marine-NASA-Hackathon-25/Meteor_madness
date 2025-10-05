@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Raw WebGL — Rotating Asteroid (No libs, no inputs)</title>
+<style>
+  html,body{height:100%;margin:0;background:transparent}
+  #canvas{display:block;width:100%;height:100vh;background:transparent}
+  .notice{position:fixed;left:8px;bottom:8px;background:rgba(0,0,0,0.45);color:#fff;padding:6px 8px;border-radius:6px;font-family:system-ui;font-size:13px}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="notice">Raw WebGL asteroid — no controls</div>
+
+<script>
+/*
+  Raw WebGL rotating asteroid.
+  - No external JS libraries.
+  - No user inputs.
+  - Transparent background (alpha).
+*/
+
+// --- helper: create shader/program
+function createShader(gl, type, source){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, source);
+  gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){
+    console.error(gl.getShaderInfoLog(s));
+    gl.deleteShader(s);
+    return null;
+  }
+  return s;
+}
+function createProgram(gl, vsSrc, fsSrc){
+  const vs = createShader(gl, gl.VERTEX_SHADER, vsSrc);
+  const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSrc);
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)){
+    console.error(gl.getProgramInfoLog(prog));
+    return null;
+  }
+  return prog;
+}
+
+// --- simple seeded RNG for deterministic bumps
+function seededRandom(seed){
+  let s = seed % 2147483647;
+  if(s <= 0) s += 2147483646;
+  return function(){
+    s = s * 16807 % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+// --- build a lat-long sphere and displace radius per-vertex
+function buildAsteroid(rows, cols, seed) {
+  const rnd = seededRandom(seed || 12345);
+  const positions = [];
+  const normals = [];
+  const uvs = [];
+  const indices = [];
+
+  for(let y=0; y<=rows; y++){
+    const v = y / rows;
+    const theta = v * Math.PI; // 0..PI
+    for(let x=0; x<=cols; x++){
+      const u = x / cols;
+      const phi = u * Math.PI * 2; // 0..2PI
+
+      // base sphere position
+      const sx = Math.sin(theta) * Math.cos(phi);
+      const sy = Math.cos(theta);
+      const sz = Math.sin(theta) * Math.sin(phi);
+
+      // per-vertex multi-layered noise from seeded RNG
+      const n1 = (rnd() - 0.5) * 0.26;
+      const n2 = (rnd() - 0.5) * 0.08;
+      const n3 = (rnd() - 0.5) * 0.04;
+      const displacement = n1 + n2 + n3;
+
+      const r = 1 + displacement; // radius
+
+      const px = sx * r;
+      const py = sy * r;
+      const pz = sz * r;
+      positions.push(px, py, pz);
+
+      // approximate normal = normalized position (good enough for mostly radial displacement)
+      const len = Math.hypot(px, py, pz) || 1;
+      normals.push(px/len, py/len, pz/len);
+
+      uvs.push(u, v);
+    }
+  }
+
+  // indices
+  for(let y=0; y<rows; y++){
+    for(let x=0; x<cols; x++){
+      const i1 = y*(cols+1) + x;
+      const i2 = i1 + (cols+1);
+      indices.push(i1, i2, i1+1);
+      indices.push(i1+1, i2, i2+1);
+    }
+  }
+
+  return {
+    positions: new Float32Array(positions),
+    normals: new Float32Array(normals),
+    uvs: new Float32Array(uvs),
+    indices: new Uint32Array(indices) // using uint32; safe in modern browsers
+  };
+}
+
+// --- vertex & fragment shader (Phong-ish)
+const vsSource = `
+  attribute vec3 aPosition;
+  attribute vec3 aNormal;
+  uniform mat4 uProjection;
+  uniform mat4 uView;
+  uniform mat4 uModel;
+  uniform mat3 uNormalMatrix;
+  varying vec3 vNormal;
+  varying vec3 vPos;
+  void main(){
+    vec4 worldPos = uModel * vec4(aPosition, 1.0);
+    vPos = worldPos.xyz;
+    vNormal = normalize(uNormalMatrix * aNormal);
+    gl_Position = uProjection * uView * worldPos;
+  }
+`;
+
+const fsSource = `
+  precision mediump float;
+  varying vec3 vNormal;
+  varying vec3 vPos;
+  uniform vec3 uLightDir;
+  uniform vec3 uCameraPos;
+  void main(){
+    vec3 N = normalize(vNormal);
+    vec3 L = normalize(uLightDir);
+    // diffuse
+    float diff = max(dot(N, L), 0.0);
+    // view & specular
+    vec3 V = normalize(uCameraPos - vPos);
+    vec3 H = normalize(L + V);
+    float spec = pow(max(dot(N, H), 0.0), 48.0) * step(0.0, diff);
+    // simple ambient + diffuse color (rocky)
+    vec3 base = vec3(0.23, 0.18, 0.14); // darker rock for contrast on light bg
+    vec3 color = base * (0.35 + 0.9*diff) + vec3(1.0)*spec*0.6;
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+// --- main
+(function(){
+  const canvas = document.getElementById('canvas');
+  const gl = canvas.getContext('webgl', { alpha: true });
+
+  if(!gl){
+    canvas.parentNode.innerHTML = '<div style="color:#000;padding:20px">WebGL not supported</div>';
+    return;
+  }
+
+  // program
+  const program = createProgram(gl, vsSource, fsSource);
+  gl.useProgram(program);
+
+  // build geometry
+  // moderate resolution so it's fast: rows x cols
+  const mesh = buildAsteroid(60, 80, 1337);
+
+  // buffers
+  const posBuf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+  gl.bufferData(gl.ARRAY_BUFFER, mesh.positions, gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, 'aPosition');
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 3, gl.FLOAT, false, 0, 0);
+
+  const nBuf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, nBuf);
+  gl.bufferData(gl.ARRAY_BUFFER, mesh.normals, gl.STATIC_DRAW);
+  const nLoc = gl.getAttribLocation(program, 'aNormal');
+  gl.enableVertexAttribArray(nLoc);
+  gl.vertexAttribPointer(nLoc, 3, gl.FLOAT, false, 0, 0);
+
+  const idxBuf = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuf);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.indices, gl.STATIC_DRAW);
+
+  // uniforms
+  const uProjection = gl.getUniformLocation(program, 'uProjection');
+  const uView = gl.getUniformLocation(program, 'uView');
+  const uModel = gl.getUniformLocation(program, 'uModel');
+  const uNormalMatrix = gl.getUniformLocation(program, 'uNormalMatrix');
+  const uLightDir = gl.getUniformLocation(program, 'uLightDir');
+  const uCameraPos = gl.getUniformLocation(program, 'uCameraPos');
+
+  // GL state
+  gl.enable(gl.DEPTH_TEST);
+  gl.enable(gl.CULL_FACE);
+
+  // resize handling
+  function resize(){
+    const w = canvas.clientWidth || window.innerWidth;
+    const h = canvas.clientHeight || window.innerHeight;
+    if(canvas.width !== w || canvas.height !== h){
+      canvas.width = w;
+      canvas.height = h;
+      gl.viewport(0,0,w,h);
+    }
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // matrices helpers (simple, minimal)
+  function perspective(out, fovy, aspect, near, far){
+    const f = 1.0 / Math.tan(fovy/2);
+    out[0] = f/aspect; out[1]=0; out[2]=0; out[3]=0;
+    out[4]=0; out[5]=f; out[6]=0; out[7]=0;
+    out[8]=0; out[9]=0; out[10]=(far+near)/(near-far); out[11]=-1;
+    out[12]=0; out[13]=0; out[14]=(2*far*near)/(near-far); out[15]=0;
+  }
+  function lookAt(out, eye, center, up){
+    const zx = eye[0]-center[0], zy = eye[1]-center[1], zz = eye[2]-center[2];
+    let zlen = Math.hypot(zx,zy,zz) || 1;
+    const zxN = zx/zlen, zyN = zy/zlen, zzN = zz/zlen;
+    const xx = up[1]*zzN - up[2]*zyN;
+    const xy = up[2]*zxN - up[0]*zzN;
+    const xz = up[0]*zyN - up[1]*zxN;
+    let xlen = Math.hypot(xx,xy,xz)||1;
+    const xxN = xx/xlen, xyN = xy/xlen, xzN = xz/xlen;
+    const yx = zyN*xzN - zzN*xyN;
+    const yy = zzN*xxN - zxN*xzN;
+    const yz = zxN*xyN - zyN*xxN;
+    out[0]=xxN; out[1]=yx; out[2]=zxN; out[3]=0;
+    out[4]=xyN; out[5]=yy; out[6]=zyN; out[7]=0;
+    out[8]=xzN; out[9]=yz; out[10]=zzN; out[11]=0;
+    out[12]=-(xxN*eye[0]+xyN*eye[1]+xzN*eye[2]);
+    out[13]=-(yx*eye[0]+yy*eye[1]+yz*eye[2]);
+    out[14]=-(zxN*eye[0]+zyN*eye[1]+zzN*eye[2]);
+    out[15]=1;
+  }
+  function multiplyMat4(out, a, b){
+    for(let i=0;i<4;i++){
+      for(let j=0;j<4;j++){
+        out[j*4 + i] = 
+          a[i + 0]*b[j*4 + 0] + a[i + 4]*b[j*4 + 1] + a[i + 8]*b[j*4 + 2] + a[i + 12]*b[j*4 + 3];
+      }
+    }
+  }
+  function identity(out){ out[0]=1;out[1]=0;out[2]=0;out[3]=0; out[4]=0;out[5]=1;out[6]=0;out[7]=0; out[8]=0;out[9]=0;out[10]=1;out[11]=0; out[12]=0;out[13]=0;out[14]=0;out[15]=1; }
+  function rotateY(out, a, rad){
+    // out = a * Ry
+    const c = Math.cos(rad), s = Math.sin(rad);
+    const R = [ c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1 ];
+    multiplyMat4(out, a, R);
+  }
+  function normalMatrix3(out3, model){
+    // compute inverse transpose of upper-left 3x3 of model
+    const m = model;
+    const a00 = m[0], a01 = m[4], a02 = m[8];
+    const a10 = m[1], a11 = m[5], a12 = m[9];
+    const a20 = m[2], a21 = m[6], a22 = m[10];
+    const b01 = a22 * a11 - a12 * a21;
+    const b11 = -a22 * a10 + a12 * a20;
+    const b21 = a21 * a10 - a11 * a20;
+    let det = a00 * b01 + a01 * b11 + a02 * b21;
+    if (!det) det = 1;
+    const invDet = 1.0 / det;
+    const r00 = b01 * invDet;
+    const r01 = (-a22 * a01 + a02 * a21) * invDet;
+    const r02 = (a12 * a01 - a02 * a11) * invDet;
+    const r10 = b11 * invDet;
+    const r11 = (a22 * a00 - a02 * a20) * invDet;
+    const r12 = (-a12 * a00 + a02 * a10) * invDet;
+    const r20 = b21 * invDet;
+    const r21 = (-a21 * a00 + a01 * a20) * invDet;
+    const r22 = (a11 * a00 - a01 * a10) * invDet;
+    out3[0]=r00; out3[1]=r01; out3[2]=r02;
+    out3[3]=r10; out3[4]=r11; out3[5]=r12;
+    out3[6]=r20; out3[7]=r21; out3[8]=r22;
+  }
+
+  // camera/view/projection
+  const proj = new Float32Array(16);
+  const view = new Float32Array(16);
+  const model = new Float32Array(16);
+  const normal3 = new Float32Array(9);
+
+  // static camera
+  const cameraPos = [0, 0.6, 5.0];
+  const target = [0, 0, 0];
+  const up = [0, 1, 0];
+
+  // light direction (from camera-ish)
+  const lightDir = [0.5, 0.7, 0.4];
+
+  // uniform locations
+  gl.uniform3fv(uLightDir, new Float32Array(lightDir));
+  gl.uniform3fv(uCameraPos, new Float32Array(cameraPos));
+
+  // set transparent clear color
+  gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+  // animation
+  let last = performance.now();
+  function render(now){
+    resize();
+    const dt = (now - last) * 0.001;
+    last = now;
+
+    // projection
+    const aspect = canvas.width / canvas.height;
+    perspective(proj, Math.PI * 0.45, aspect, 0.1, 100.0);
+    gl.uniformMatrix4fv(uProjection, false, proj);
+
+    // view
+    lookAt(view, cameraPos, target, up);
+    gl.uniformMatrix4fv(uView, false, view);
+
+    // model rotation
+    identity(model);
+    const t = now * 0.001;
+    rotateY(model, model, t * 0.4); // rotate around Y
+
+    // send model
+    gl.uniformMatrix4fv(uModel, false, model);
+
+    // normal matrix
+    normalMatrix3(normal3, model);
+    gl.uniformMatrix3fv(uNormalMatrix, false, normal3);
+
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.drawElements(gl.TRIANGLES, mesh.indices.length, gl.UNSIGNED_INT, 0);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>
