@@ -1,7 +1,7 @@
 import requests
 import json
 from astroquery.jplhorizons import Horizons
-from ervices.helpers import get_datetimes, get_paths_to_kernels, au_in_km
+from helpers import get_datetimes, get_paths_to_kernels, au_in_km
 import spiceypy as spice
 import numpy as np
 
