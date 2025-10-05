@@ -7,7 +7,7 @@ from astropy.coordinates import GCRS, ITRS, CartesianRepresentation, EarthLocati
 from poliastro.bodies import Sun
 from poliastro.twobody import Orbit
 from numpy import linalg, arccos, degrees
-from helpers import get_paths_to_kernels, au_in_km
+from services.helpers import get_paths_to_kernels, au_in_km
 import folium
 
 
