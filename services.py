@@ -71,7 +71,12 @@ def sim_orbit_n_conseq(des=DES):
     lat = earth_location.lat.deg
     lon = earth_location.lon.deg
     alt = earth_location.height.to(u.km).value
-    make_point(lat, lon)
+    
+    # map
+    m = get_map_obj(lat, lon)
+    draw_crater(m, lat, lon, kinetic_energy)
+    m.save("templates/meteor_entry_map.html")
+    
     print(f"Entry coordinates (km): {r_vec}")
     print(f"Entry speed (km/s): {v_mag:.3f}")
     print(f"Entry angle (°): {entry_angle:.2f}")
@@ -88,10 +93,23 @@ def sim_orbit_n_conseq(des=DES):
     return orbit, r_vec, mass, entry_angle, v_mag, kinetic_energy, lat, lon
 
 
-def make_point(lat, lon):
+def get_map_obj(lat, lon):
     m = folium.Map(location=[lat, lon], zoom_start=5)
     folium.Marker([lat, lon]).add_to(m)
-    m.save("meteor_entry_map.html")
+    return m
+   
 
+def draw_crater(map_obj, lat, lon, kinetic_energy):
+    crater_radius = (kinetic_energy / (4.3e14)) ** (1/4)  # ← замінив пробіли на **
+    crater_radius_km = crater_radius / 1000
+    folium.Circle(
+        location=[lat, lon],
+        radius=crater_radius,
+        color="red",
+        fill=True,
+        fill_opacity=0.4,
+        popup=f"Crater radius: {crater_radius_km:.2f} km"
+    ).add_to(map_obj)
+    return map_obj
 
 # sim_orbit_n_conseq()
