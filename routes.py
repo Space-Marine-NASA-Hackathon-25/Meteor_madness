@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from services.services import *
+from services import *
 
 bp = Blueprint("routes", __name__, url_prefix="")
 
@@ -14,6 +14,8 @@ def search_asteroid_daesignation():
     """ Search APIs for info + parameters? POST return text data """
     if request.method == "POST":
         pass
+    else:
+        des = request.method.get("des")
     return render_template("search.html")
     
     
