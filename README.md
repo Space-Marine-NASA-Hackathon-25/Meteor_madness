@@ -1,5 +1,6 @@
 # Meteor_madness
 Project for Meteor Madness challenge from the NASA Space Apps Challenge Hackathon 2025
+
 Kateryna - team lead. She formed the group, programmed key functions, and coordinated the workflow.
 
 Kseniia - responsible for front-end development and supported the preparation of text content.
