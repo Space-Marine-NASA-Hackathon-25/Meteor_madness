@@ -3,30 +3,89 @@
 {% block title %}Madness{% endblock %}
 
 {% block main %}
+{% extends "base.html" %}
+
+{% block title %}Madness{% endblock %}
+
+{% block main %}
 <div class="content">
     <div class="buttons-section">
-        <button class="nav-button">Search for meteor</button>
-        <button class="nav-button">Custom parameters</button>
-        <button class="nav-button">Simulate</button>
+        <button class="nav-button">Задати метеорит</button>
+        <button class="nav-button">Симулювати</button>
         <button class="nav-button">Відхилити</button>
     </div>
 
     <div class="selection-section">
         <div class="material-selector">
-            <h3 class="selector-title">Оберіть матеріал метеорита</h3>
-            <div class="material-options">
-                <div class="material-option active" data-material="iron">Залізний</div>
-                <div class="material-option" data-material="stone">Кам'яний</div>
-                <div class="material-option" data-material="ice">Льодяний</div>
-                <div class="material-option" data-material="earth">Земний</div>
-                <div class="material-option" data-material="crystal">Кристалічний</div>
-            </div>
-        </div>
+            <h3 class="selector-title">Доступні астероїди</h3>
+            <div class="asteroids-container">
+                <div class="asteroids-scroll">
+                    <div class="asteroid-item" data-meteor="2024JW16" onclick="selectAsteroid('2024JW16')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2024JW16</span>
+                            <span class="asteroid-details">Кам'яний • 0.12 AU • 1500 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
 
-        <div class="meteor-gif" id="meteorDisplay">
-            <div class="placeholder">Гіфка метеорита</div>
+                    <div class="asteroid-item" data-meteor="2013TP4" onclick="selectAsteroid('2013TP4')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2013TP4</span>
+                            <span class="asteroid-details">Залізний • 0.08 AU • 2800 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
+
+                    <div class="asteroid-item" data-meteor="2014CR13" onclick="selectAsteroid('2014CR13')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2014CR13</span>
+                            <span class="asteroid-details">Залізно-кам'яний • 0.15 AU • 1900 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
+
+                    <div class="asteroid-item" data-meteor="2008FF5" onclick="selectAsteroid('2008FF5')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2008FF5</span>
+                            <span class="asteroid-details">Кам'яний • 0.22 AU • 1200 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
+
+                    <div class="asteroid-item" data-meteor="2021EU" onclick="selectAsteroid('2021EU')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2021EU</span>
+                            <span class="asteroid-details">Льодяний • 0.18 AU • 800 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
+
+                    <div class="asteroid-item" data-meteor="2006JY26" onclick="selectAsteroid('2006JY26')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2006JY26</span>
+                            <span class="asteroid-details">Залізний • 0.09 AU • 3200 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
+
+                    <div class="asteroid-item" data-meteor="2025SQ4" onclick="selectAsteroid('2025SQ4')">
+                        <div class="asteroid-content">
+                            <span class="asteroid-name">2025SQ4</span>
+                            <span class="asteroid-details">Кам'яний • 0.14 AU • 1700 кг</span>
+                        </div>
+                        <div class="asteroid-arrow">→</div>
+                    </div>
+                </div>
+                <div class="scroll-indicator">↓ Прокрутіть для більше астероїдів</div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+function selectAsteroid(meteorId) {
+window.location.href = '/result?meteor=' + meteorId;
+}
+</script>
+{% endblock %}
 
 {% endblock %}
