@@ -1651,3 +1651,176 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 168, 255, 0.5);
 }
+
+
+
+/*how-it-works.css*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Exo 2", sans-serif;
+    background: url("images/earth.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #e0f7ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+
+/* Стилі для сторінки How It Works */
+.how-it-works-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.page-title-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    color: #00e5ff;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+    margin-bottom: 1rem;
+}
+
+.page-subtitle {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.3rem;
+    color: #a0e7ff;
+    opacity: 0.9;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.science-card {
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid #0077b6;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.science-card:hover {
+    transform: translateY(-8px);
+    border-color: #00e5ff;
+    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3);
+}
+
+.science-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent);
+    transition: left 0.6s;
+}
+
+.science-card:hover::before {
+    left: 100%;
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    color: #00e5ff;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.card-text {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1rem;
+    color: #e0f7ff;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* Короткий опис */
+.brief-description {
+    background: rgba(10, 25, 47, 0.6);
+    border: 1px solid #00a8ff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.brief-description p {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.1rem;
+    color: #e0f7ff;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Стилі для кнопки Back to Main */
+.back-main-button {
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    border: none;
+    border-radius: 10px;
+    padding: 1.2rem 3rem;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.back-main-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 180, 216, 0.6);
+}
+
+.btn-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s;
+}
+
+.back-main-button:hover .btn-shine {
+    left: 100%;
+}
+
+.action-section {
+    text-align: center;
+}
