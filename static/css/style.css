@@ -120,6 +120,32 @@ body {
     left: 100%;
 }
 
+.info-buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.info-button {
+    background: rgba(0, 40, 80, 0.5);
+    border: 1px solid #00a8ff;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    color: #e0f7ff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.info-button:hover {
+    background: rgba(0, 80, 160, 0.7);
+    transform: translateY(-2px);
+}
+
+
+
+
 .selection-section {
     flex: 1;
     display: flex;
@@ -187,6 +213,139 @@ body {
     text-align: center;
     padding: 2rem;
 }
+
+.asteroids-container {
+    max-height: 300px;
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.asteroids-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+
+.asteroids-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.asteroids-scroll::-webkit-scrollbar-track {
+    background: rgba(20, 50, 90, 0.3);
+    border-radius: 3px;
+}
+
+.asteroids-scroll::-webkit-scrollbar-thumb {
+    background: #0077b6;
+    border-radius: 3px;
+}
+
+.asteroids-scroll::-webkit-scrollbar-thumb:hover {
+    background: #00e5ff;
+}
+
+.asteroid-item {
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid #0077b6;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0, 119, 182, 0.2);
+    flex-shrink: 0;
+}
+
+.asteroid-item:hover {
+    background: rgba(20, 50, 90, 0.9);
+    border-color: #00e5ff;
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+}
+
+.asteroid-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #0077b6;
+    transition: all 0.3s ease;
+}
+
+.asteroid-item:hover::before {
+    background: #00e5ff;
+    width: 6px;
+}
+
+.asteroid-content {
+    flex: 1;
+}
+
+.asteroid-name {
+    display: block;
+    color: #00e5ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.asteroid-details {
+    display: block;
+    color: #a0e7ff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.asteroid-arrow {
+    color: #0077b6;
+    font-size: 1.5rem;
+    font-weight: 300;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.asteroid-item:hover .asteroid-arrow {
+    color: #00e5ff;
+    transform: translateX(3px);
+}
+
+.scroll-indicator {
+    text-align: center;
+    color: #a0e7ff;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+    font-family: 'Exo 2', sans-serif;
+}
+
+.asteroid-item[data-meteor="2024JW16"]::before { background: #ff6b6b; }
+.asteroid-item[data-meteor="2013TP4"]::before { background: #4ecdc4; }
+.asteroid-item[data-meteor="2014CR13"]::before { background: #45b7d1; }
+.asteroid-item[data-meteor="2008FF5"]::before { background: #f9c74f; }
+.asteroid-item[data-meteor="2021EU"]::before { background: #90be6d; }
+.asteroid-item[data-meteor="2006JY26"]::before { background: #577590; }
+.asteroid-item[data-meteor="2025SQ4"]::before { background: #f94144; }
+
+.asteroid-item:hover[data-meteor="2024JW16"]::before { background: #ff8e8e; }
+.asteroid-item:hover[data-meteor="2013TP4"]::before { background: #6de0d8; }
+.asteroid-item:hover[data-meteor="2014CR13"]::before { background: #67c7e1; }
+.asteroid-item:hover[data-meteor="2008FF5"]::before { background: #fbd56f; }
+.asteroid-item:hover[data-meteor="2021EU"]::before { background: #a8d492; }
+.asteroid-item:hover[data-meteor="2006JY26"]::before { background: #6f8aab; }
+.asteroid-item:hover[data-meteor="2025SQ4"]::before { background: #fb6b6e; }
 
 @keyframes glow {
     from {
@@ -379,6 +538,7 @@ body {
     box-shadow: 0 0 20px rgba(0, 119, 182, 0.3);
     overflow: hidden;
     position: relative;
+    padding: 1rem;
 }
 
 .gif-label1 {
@@ -387,6 +547,13 @@ body {
     color: #00e5ff;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+.asteroid-image {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
 }
 
 .meteor-visual1 {
@@ -1207,4 +1374,241 @@ body {
     .param-value5 {
         font-size: 1.3rem;
     }
+}
+
+
+/*about.css*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*base.html*/
+body {
+    font-family: "Exo 2", sans-serif;
+    background: url("../images/earth.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #e0f7ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.container6 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    min-height: 100vh;
+}
+
+.header6 {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 3rem;
+}
+.main-title6 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #00e5ff;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle6 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: #a0e7ff;
+    letter-spacing: 2px;
+}
+
+.content6 {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.about-header6 {
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid #0077b6;
+    border-radius: 15px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0, 119, 182, 0.4);
+    margin-top: 2rem;
+}
+
+.page-title6 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: #00e5ff;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.team-title6 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: #00e5ff;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.team-description6 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.2rem;
+    color: #e0f7ff;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+.header-content6 {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-photo6 {
+    flex: 0 0 45%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-photo6 {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 2px solid #00a8ff;
+    box-shadow: 0 0 20px rgba(0, 168, 255, 0.4);
+}
+
+.header-text6 {
+    flex: 1;
+    text-align: left;
+}
+
+
+.member-photo6 {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: none;
+
+}
+
+.member-photo6 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+        border-radius: none;
+}
+
+
+.team-grid6 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.member-block6 {
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid #0077b6;
+    border-radius: 15px;
+    padding: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    box-shadow: 0 0 15px rgba(0, 119, 182, 0.3);
+    transition: all 0.3s ease;
+}
+
+.member-block6:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 25px rgba(0, 229, 255, 0.4);
+    border-color: #00e5ff;
+}
+
+.member-photo6 {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(20, 50, 90, 0.7);
+    border: 2px solid #00a8ff;
+    flex-shrink: 0;
+}
+
+.photo-placeholder6 {
+    background: linear-gradient(45deg, #0077b6, #00b4d8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.member-info6 {
+    flex: 1;
+}
+
+.member-name6 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    color: #00e5ff;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.member-role6 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1rem;
+    color: #e0f7ff;
+    line-height: 1.5;
+}
+
+.action-section6 {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.nav-button6 {
+    background: rgba(0, 40, 80, 0.7);
+    border: 2px solid #00a8ff;
+    border-radius: 10px;
+    padding: 1.2rem 3rem;
+    color: #e0f7ff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-button6:hover {
+    background: rgba(0, 80, 160, 0.8);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.5);
 }
