@@ -8,13 +8,19 @@ body.search-page {
 }
 
 body.about-page {
-    background: url("../images/about-bg.jpg");
+    background: url("../images/Earth21.jpeg");
 }
 
 body.how-it-works-page {
     background: url("../images/how-it-works-bg.jpg");
 }
 
+body.result-page {
+    background: url("../images/Earth21.jpeg");
+}
+.body.deflection-paf{
+    background: url("../images/sky.jpeg");
+}
 /* Загальні стилі для всіх фонів */
 body {
     background-size: cover;

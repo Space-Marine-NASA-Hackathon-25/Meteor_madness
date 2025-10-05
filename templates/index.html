@@ -2,14 +2,14 @@
 
 {% block title %}Madness{% endblock %}
 
-
+{% block body_attrs %}id="default-page"{% endblock %}
 {% block main %}
 <div class="content">
     <div class="buttons-section">
     <button class="nav-button" onclick="window.location.href='/simulation'">Set meteors</button>
     <button class="nav-button" onclick="window.location.href='/result'">
 Simulate</button>
-    <button class="nav-button" onclick="window.location.href='/'">Reject</button>
+    <button class="nav-button" onclick="window.location.href='/'">Mitigate</button>
     <div class="info-buttons">
             <button class="info-button">About Us</button>
             <button class="info-button">How it work</button>
