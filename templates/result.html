@@ -5,13 +5,14 @@
 {% block main %}
         <div class="container4">
             <header>
-                <h1 class="main-title4">НАСЛІДКИ ЗІТКНЕННЯ</h1>
+                <h1 class="main-title4">Consequences Of Collision</h1>
             </header>
             <div class="content-grid4">
 
                 <div class="column4 left-column4">
                     <div class="text-block4">
-                        <h2 class="block-title4">Кратер та зона вибуху</h2>
+                        <h2 class="block-title4">Crater And Blast Zone
+</h2>
                         <div class="input-group4">
                             <p class="text-input4">
                                 1<br>
@@ -21,7 +22,8 @@
                         </div>
                     </div>
                     <div class="text-block4">
-                        <h2 class="block-title4">Переміщення повітря</h2>
+                        <h2 class="block-title4">Air Displacement
+</h2>
                         <div class="input-group4">
                             <p class="text-input4">
                                 1<br>
@@ -34,7 +36,8 @@
 
                 <div class="column4 center-column4">
                     <div class="text-block4">
-                        <h2 class="block-title4">Кліматичні зміни</h2>
+                        <h2 class="block-title4">Climate Change
+</h2>
                         <div class="input-group4">
                             <p class="text-input4">
                                 1<br>
@@ -44,7 +47,8 @@
                         </div>
                     </div>
                     <div class="text-block4">
-                        <h2 class="block-title4">Енергія метеориту</h2>
+                        <h2 class="block-title4">Meteorite Energy
+</h2>
                         <div class="input-group4">
                             <p class="text-input4">
                                 1<br>
@@ -57,7 +61,8 @@
 
                 <div class="column4 right-column4">
                     <div class="text-block4">
-                        <h2 class="block-title4">Сейсмічна активність</h2>
+                        <h2 class="block-title4">Seismic Activity
+</h2>
                         <div class="input-group4">
                             <p class="text-input4">
                                 1<br>
@@ -67,19 +72,36 @@
                         </div>
                     </div>
 
-                    <div class="text-block4 map-block4">
-                        <h2 class="block-title4">Мапа</h2>
-                        <div class="map-container4">
-                            <div class="map-placeholder4">
-                                <span class="map-text4">Тут буде мапа</span>
-                            </div>
-                        </div>
-                    </div>
+<div class="text-block4 map-block4 map-clickable" onclick="window.location.href='/meteor_entry_map.html'">
+    <h2 class="block-title4">Map
+</h2>
+    <div class="map-container4">
+        <div class="map-placeholder4">
+            <span class="map-text4">View Map
+ →</span>
+        </div>
+    </div>
+</div>
+
+<style>
+.map-clickable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.map-clickable:hover {
+    transform: translateY(-5px);
+    border-color: #00ffff;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+}
+</style>
                 </div>
             </div>
 
             <div class="action-section4">
-                <button class="change-button4">Обрати інший</button>
+                <button class="change-button4">Choose Another
+</button>
             </div>
         </div>
 
