@@ -1,3 +1,17 @@
+/* посилання */
+header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+header a:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 30px rgba(0, 229, 255, 1),
+    0 0 40px rgba(0, 229, 255, 0.8);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -936,5 +950,261 @@ header {
     .map-placeholder4 {
         min-height: 80px;
         font-size: 1rem;
+    }
+}
+
+/*deflection.css*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Exo 2", sans-serif;
+    background: url("../images/sky.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #e0f7ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container5 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header5 {
+    text-align: left;
+    margin-bottom: 4rem;
+    padding-top: 3rem;
+}
+
+.main-title5 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #00e5ff;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+    letter-spacing: 6px;
+    margin-bottom: 1rem;
+    animation: glow5 3s ease-in-out infinite alternate;
+}
+
+.subtitle5 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #a0e7ff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.content-wrapper5 {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.parameters-section5 {
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid #0077b6;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 0 25px rgba(0, 119, 182, 0.5);
+    max-width: 500px;
+}
+
+.parameter-group5 {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.parameter5 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0, 150, 199, 0.3);
+}
+
+.parameter5:last-child {
+    border-bottom: none;
+}
+
+.param-label5 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.4rem;
+    color: #a0e7ff;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.param-value5 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: #00e5ff;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.buttons-section5 {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 500px;
+}
+
+.launch-btn5 {
+    width: 100%;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    border: none;
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 25px rgba(0, 180, 216, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.launch-btn5:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 180, 216, 0.8);
+}
+
+.btn-shine5 {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s;
+}
+
+.launch-btn5:hover .btn-shine5 {
+    left: 100%;
+}
+
+.back-btn5 {
+    width: 100%;
+    background: rgba(0, 40, 80, 0.7);
+    border: 2px solid #00a8ff;
+    border-radius: 12px;
+    padding: 1.2rem;
+    color: #e0f7ff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 168, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.back-btn5:hover {
+    background: rgba(0, 80, 160, 0.8);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 168, 255, 0.6);
+}
+
+@keyframes glow5 {
+    from {
+        text-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(0, 229, 255, 1), 0 0 40px rgba(0, 229, 255, 0.6);
+    }
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+    .container5 {
+        padding: 1.5rem;
+    }
+    
+    .main-title5 {
+        font-size: 3.5rem;
+        letter-spacing: 4px;
+    }
+    
+    .subtitle5 {
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+    }
+    
+    .parameters-section5 {
+        padding: 2rem;
+        max-width: 100%;
+    }
+    
+    .param-label5 {
+        font-size: 1.2rem;
+    }
+    
+    .param-value5 {
+        font-size: 1.5rem;
+    }
+    
+    .launch-btn5 {
+        font-size: 1.2rem;
+        padding: 1.3rem;
+    }
+    
+    .back-btn5 {
+        font-size: 1.1rem;
+        padding: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container5 {
+        padding: 1rem;
+    }
+    
+    .main-title5 {
+        font-size: 2.8rem;
+    }
+    
+    .subtitle5 {
+        font-size: 1rem;
+    }
+    
+    .parameters-section5 {
+        padding: 1.5rem;
+    }
+    
+    .parameter-group5 {
+        gap: 1.5rem;
+    }
+    
+    .parameter5 {
+        padding: 0.8rem 0;
+    }
+    
+    .param-label5 {
+        font-size: 1.1rem;
+    }
+    
+    .param-value5 {
+        font-size: 1.3rem;
     }
 }
